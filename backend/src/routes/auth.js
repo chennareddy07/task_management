@@ -33,8 +33,10 @@ const hashToken = (token) =>
 
 const cookieOptions = () => ({
   httpOnly: true,
-  secure: true,
-  sameSite: process.env.COOKIE_SAME_SITE || 'none',
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.COOKIE_SAME_SITE || (
+    process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  ),
   ...(process.env.COOKIE_DOMAIN
     ? { domain: process.env.COOKIE_DOMAIN }
     : {}),
